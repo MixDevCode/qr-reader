@@ -61,14 +61,18 @@
 
 <body>
     <div class="mt-3 ms-3">
-        <h1>Scan from WebCam:</h1>
+        <h1>STEM Club Competition Scanner:</h1>
         <div id="video-container">
-            <video id="qr-video"></video>
+            <video id="qr-video" style="max-width: 30%;"></video>
         </div>
 
         <br>
         <b>Detected QR code: </b>
         <span id="cam-qr-result">None</span>
+        <br>
+        <b>Is Binary: </b><span id="isBinary">Don't Know</span>
+        <br>
+        <b id="translatedB"></b><span id="translated"></span>
     </div>
 
     <!--<script src="../qr-scanner.umd.min.js"></script>-->
@@ -81,13 +85,38 @@
         const camHasCamera = document.getElementById('cam-has-camera');
         const camHasFlash = document.getElementById('cam-has-flash');
         const camQrResult = document.getElementById('cam-qr-result');
+        const isBinarySpan = document.getElementById("isBinary")
+        const translatedBold = document.getElementById("translatedB")
+        const translatedSpan = document.getElementById("translated")
+
+        function checkBinary(string) {
+            let pattern = /^[01 ]*$/;
+            return string.match(pattern) ? true : false
+        }
+
+        function convertBinary(str) {
+            let newBin = str.split(" ");
+            let binCode = [];
+
+            for (let i = 0; i < newBin.length; i++) {
+                binCode.push(String.fromCharCode(parseInt(newBin[i], 2)));
+            }
+            return binCode.join("");
+        }
 
         function setResult(label, result) {
-            console.log(result.data);
             label.textContent = result.data;
             label.style.color = 'teal';
             clearTimeout(label.highlightTimeout);
             label.highlightTimeout = setTimeout(() => label.style.color = 'inherit', 100);
+            const isBinary = checkBinary(result.data)
+            if (isBinary === true) {
+                const converted = convertBinary(result.data)
+                isBinarySpan.textContent = isBinary
+                translatedBold.textContent = "Translated text: "
+                translatedSpan.textContent = converted.toString()
+            }
+            scanner.stop()
         }
 
         // ####### Web Cam Scanning #######
@@ -106,8 +135,6 @@
         // for debugging
         window.scanner = scanner;
     </script>
-
-    <script src="./scripts/binary-stuff.js">
 
     </script>
 
