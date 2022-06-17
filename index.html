@@ -107,7 +107,7 @@
         const link = document.getElementById('link');
 
         function setResult(label, result) {
-            label.textContent = result.data;
+            label.textContent = 'Código escaneado';
             label.style.color = 'teal';
             clearTimeout(label.highlightTimeout);
             label.highlightTimeout = setTimeout(() => label.style.color = 'inherit', 100);
