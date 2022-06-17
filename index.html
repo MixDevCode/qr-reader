@@ -72,7 +72,7 @@
         </div>
         <span id="cam-qr-result" class="pregunta">No hay resultados</span>
         <br>
-        <button class="btn btn-primary" onclick="window.location.reload()">Escanear otro</button>
+        <a href="#" class="btn btn-primary" id="link" style="display: none;">Ir a la página</a>
     </div>
     <footer class="text-center text-white" id="footer" style="background-color: #f1f1f1;">
         <!-- Grid container -->
@@ -104,6 +104,7 @@
         const camHasCamera = document.getElementById('cam-has-camera');
         const camHasFlash = document.getElementById('cam-has-flash');
         const camQrResult = document.getElementById('cam-qr-result');
+        const link = document.getElementById('link');
 
         function setResult(label, result) {
             label.textContent = result.data;
@@ -111,6 +112,9 @@
             clearTimeout(label.highlightTimeout);
             label.highlightTimeout = setTimeout(() => label.style.color = 'inherit', 100);
             scanner.stop()
+            videoContainer.style.display = 'none';
+            link.href = result.data;
+            link.style.display = 'block';
         }
 
         // ####### Web Cam Scanning #######
